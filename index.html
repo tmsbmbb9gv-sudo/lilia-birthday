@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Для Лилии</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#0e0e12;color:#f7f3ee;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.bg{position:fixed;inset:0;background:radial-gradient(circle at 20% 20%,#3b2635 0,transparent 32%),radial-gradient(circle at 80% 75%,#252d43 0,transparent 35%);opacity:.8}
+.card{position:relative;width:min(92vw,520px);min-height:620px;padding:42px 28px;border:1px solid #ffffff18;border-radius:30px;background:#ffffff0b;backdrop-filter:blur(18px);box-shadow:0 25px 80px #0008;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.small{letter-spacing:.18em;text-transform:uppercase;font-size:11px;opacity:.6}.name{font-size:52px;font-weight:700;letter-spacing:-.04em;margin:12px 0 20px}.title{font-size:30px;font-weight:650;line-height:1.12;margin:10px 0 18px}.text{font-size:17px;line-height:1.55;color:#ddd7d2}.btn{border:0;border-radius:999px;padding:15px 24px;margin:14px auto 0;background:#f4eee7;color:#171419;font-weight:650;font-size:16px;cursor:pointer;transition:.2s}.btn:hover{transform:translateY(-2px)}input{width:100%;padding:15px 17px;border-radius:15px;border:1px solid #ffffff20;background:#ffffff0d;color:#fff;font-size:17px;outline:none;text-align:center;margin-top:15px}.hint{font-size:13px;opacity:.5;margin-top:12px}.screen{display:none}.screen.active{display:block;animation:in .45s ease}@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}.progress{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-size:11px;opacity:.45}.error{color:#f3a8a8;font-size:13px;margin-top:10px;min-height:18px}.heart{font-size:48px;margin-bottom:10px}.final{font-size:20px;line-height:1.5}.confetti{position:fixed;inset:0;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="card">
+<div class="progress" id="progress"></div>
+
+<section class="screen active" id="s1">
+<div class="small">маленькая история для</div>
+<div class="name">Лилии</div>
+<div class="text">Сегодня твой день рождения.<br>Но просто написать «с днём рождения» было бы слишком легко.</div>
+<button class="btn" onclick="go(2)">Начать</button>
+</section>
+
+<section class="screen" id="s2">
+<div class="small">уровень 1</div>
+<div class="title">Первое правило</div>
+<div class="text">Сегодня нельзя просто получать подарки.<br>Их нужно заслужить 😌</div>
+<p class="text">Разгадай слово:</p>
+<div class="text">Я есть у каждого человека. Меня можно потерять, найти и иногда совершенно случайно подарить другому.</div>
+<input id="a1" placeholder="Твой ответ">
+<div class="error" id="e1"></div>
+<button class="btn" onclick="check1()">Проверить</button>
+</section>
+
+<section class="screen" id="s3">
+<div class="small">уровень 2</div>
+<div class="title">Хорошо. Первый пройден.</div>
+<div class="text">Теперь маленькая подсказка:</div>
+<p class="text"><b>«Самые интересные вещи редко начинаются со слов “я всё запланировал”.»</b></p>
+<div class="text">Вспомни место, куда тебе хотелось бы выбраться или где тебе было бы приятно оказаться.</div>
+<button class="btn" onclick="go(4)">Иду дальше</button>
+</section>
+
+<section class="screen" id="s4">
+<div class="small">уровень 3</div>
+<div class="title">Почти у цели</div>
+<div class="text">Последняя загадка:</div>
+<p class="text">Что становится ценнее, когда им делишься, но при этом не заканчивается?</p>
+<input id="a2" placeholder="Твой ответ">
+<div class="error" id="e2"></div>
+<button class="btn" onclick="check2()">Проверить</button>
+</section>
+
+<section class="screen" id="s5">
+<div class="heart">♡</div>
+<div class="small">финал</div>
+<div class="title">Квест окончен.</div>
+<div class="final">А твой день только начинается.</div>
+<p class="text">Спасибо, что дошла до конца.<br>Теперь просто приготовься к маленькому сюрпризу.</p>
+<button class="btn" onclick="finish()">Открыть финал</button>
+</section>
+
+<section class="screen" id="s6">
+<div class="heart">✦</div>
+<div class="small">для тебя</div>
+<div class="title">С днём рождения, Лилия ❤️</div>
+<div class="final">Желаю тебе года, который захочется запомнить.</div>
+<p class="text">А дальше — без подсказок. Я сам тебя найду 😉</p>
+<button class="btn" onclick="celebrate()">✨</button>
+</section>
+</div>
+<canvas class="confetti" id="c"></canvas>
+<script>
+let cur=1;
+function go(n){document.getElementById('s'+cur).classList.remove('active');cur=n;document.getElementById('s'+cur).classList.add('active');document.getElementById('progress').textContent=cur<6?'ЭТАП '+(cur-1)+' / 3':''}
+function check1(){let v=document.getElementById('a1').value.trim().toLowerCase();if(['время','доверие'].includes(v)){go(3)}else document.getElementById('e1').textContent='Не-а 😏 Попробуй ещё раз.'}
+function check2(){let v=document.getElementById('a2').value.trim().toLowerCase();if(['счастье','радость','любовь','дружба','знания','опыт'].some(x=>v.includes(x))){go(5)}else document.getElementById('e2').textContent='Почти. Подумай о том, что можно дарить другим.'}
+function finish(){go(6)}
+function celebrate(){let c=document.getElementById('c'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;let p=[];for(let i=0;i<130;i++)p.push({x:innerWidth/2,y:innerHeight/2,vx:(Math.random()-.5)*9,vy:(Math.random()-.8)*10,s:Math.random()*6+3,r:Math.random()*6.28});function f(){x.clearRect(0,0,c.width,c.height);p.forEach(q=>{q.x+=q.vx;q.vy+=.16;q.y+=q.vy;q.r+=.1;x.save();x.translate(q.x,q.y);x.rotate(q.r);x.fillStyle=['#f4eee7','#e7b9c7','#b9c7e7','#d9c58f'][Math.floor(Math.random()*4)];x.fillRect(-q.s/2,-q.s/2,q.s,q.s);x.restore()});requestAnimationFrame(f)}f()}
+</script>
+</body>
+</html>
